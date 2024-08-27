@@ -58,9 +58,10 @@ const response = await fetchPhotos(searchedValue, currentPage);
 const onLoadMore = async event =>{
 try{
   currentPage ++;
+  loader.classList.remove('is-hidden')
   const response = await fetchPhotos(searchedValue, currentPage);
   const galleryCardsTemplate = response.data.hits.map(imgDetails => createGalleryCardTemplate(imgDetails)).join('');
-  
+  loader.classList.add('is-hidden');
   galleryEl.insertAdjacentHTML("beforeend", galleryCardsTemplate);
 
   scrollBy({
@@ -68,7 +69,7 @@ try{
     behavior: 'smooth',
   });
 
-  if (currentPage === (response.data.totalHits / per_page)) {
+  if (currentPage === Math.ceil(response.data.totalHits / 15)) {
     loadMoreBtn.classList.add('is-hidden');
     iziToast.error({
       message: "We're sorry, but you've reached the end of search results.",
