@@ -15,12 +15,13 @@ const loadMoreBtn = document.querySelector(".load-more");
 let currentPage = 1;
 let searchedValue = "";
 let cardHeight = 0;
+const loader = document.querySelector(".loader");
 
 const onSearchFormSubmit = async event =>{
   try {
     event.preventDefault();
     currentPage = 1;
-  const loader = document.querySelector(".loader");
+  
   loader.classList.remove('is-hidden')
   searchedValue = searchFormEl.elements.user_query.value;
   if (!searchedValue.trim()){
@@ -69,7 +70,7 @@ try{
     behavior: 'smooth',
   });
 
-  if (currentPage === Math.ceil(response.data.totalHits / 15)) {
+  if (currentPage >= Math.ceil(response.data.totalHits / 15)) {
     loadMoreBtn.classList.add('is-hidden');
     iziToast.error({
       message: "We're sorry, but you've reached the end of search results.",
